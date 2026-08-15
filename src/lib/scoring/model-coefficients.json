@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "trainedAt": "2026-08-15T16:39:07.631862+00:00",
+  "scoreRange": {
+    "min": 300,
+    "max": 900
+  },
+  "logOddsRange": {
+    "min": -10.13372771547021,
+    "max": 16.54844302511481
+  },
+  "intercept": 4.37570432547089,
+  "features": [
+    {
+      "name": "avg_monthly_income",
+      "label": "Average monthly income",
+      "unit": "INR",
+      "higherIsBetter": true,
+      "coefficient": 1.0881883409148236,
+      "mean": 13536.88284128346,
+      "scale": 7840.131617721998,
+      "trainMin": 2000.0,
+      "trainMax": 60000.0
+    },
+    {
+      "name": "income_consistency",
+      "label": "Income consistency",
+      "unit": "ratio",
+      "higherIsBetter": true,
+      "coefficient": 2.0549824768651943,
+      "mean": 0.6651435753852372,
+      "scale": 0.16179643013771672,
+      "trainMin": 0.08467543488611784,
+      "trainMax": 0.9957388886171756
+    },
+    {
+      "name": "avg_monthly_txn_count",
+      "label": "Monthly digital transactions",
+      "unit": "count",
+      "higherIsBetter": true,
+      "coefficient": 0.9162464160540572,
+      "mean": 47.963769517700214,
+      "scale": 24.323134031256266,
+      "trainMin": 2.5497364827280147,
+      "trainMax": 207.6307506933411
+    },
+    {
+      "name": "txn_consistency",
+      "label": "Transaction consistency",
+      "unit": "ratio",
+      "higherIsBetter": true,
+      "coefficient": 1.805599924435341,
+      "mean": 0.6128156577732494,
+      "scale": 0.17874894372262615,
+      "trainMin": 0.056468336078929836,
+      "trainMax": 0.9883866732756252
+    },
+    {
+      "name": "utility_ontime_rate",
+      "label": "Utility bill on-time rate",
+      "unit": "ratio",
+      "higherIsBetter": true,
+      "coefficient": 1.958417718061567,
+      "mean": 0.7524861142930591,
+      "scale": 0.14438618153004218,
+      "trainMin": 0.12172069247842676,
+      "trainMax": 0.9970125386262106
+    },
+    {
+      "name": "platform_tenure_months",
+      "label": "Work/platform tenure",
+      "unit": "months",
+      "higherIsBetter": true,
+      "coefficient": 0.9594109059309579,
+      "mean": 19.930045987774868,
+      "scale": 13.28406455239719,
+      "trainMin": 0.33624289413507846,
+      "trainMax": 114.52012622810575
+    },
+    {
+      "name": "customer_rating",
+      "label": "Customer rating",
+      "unit": "stars",
+      "higherIsBetter": true,
+      "coefficient": 1.4013849802279106,
+      "mean": 4.198711784053265,
+      "scale": 0.4808138261433417,
+      "trainMin": 1.8707213059582735,
+      "trainMax": 4.995033895019954
+    },
+    {
+      "name": "cancellation_rate",
+      "label": "Cancellation rate",
+      "unit": "ratio",
+      "higherIsBetter": false,
+      "coefficient": -1.790783381620443,
+      "mean": 0.15803306189216904,
+      "scale": 0.11219921148303283,
+      "trainMin": 0.00010710560828436182,
+      "trainMax": 0.7771148316877541
+    },
+    {
+      "name": "savings_rate",
+      "label": "Savings rate",
+      "unit": "ratio",
+      "higherIsBetter": true,
+      "coefficient": 1.2074216814079037,
+      "mean": 0.248902712028837,
+      "scale": 0.14393725105983995,
+      "trainMin": 0.0028122356683799137,
+      "trainMax": 0.877365717191484
+    },
+    {
+      "name": "debt_to_income",
+      "label": "Existing debt-to-income",
+      "unit": "ratio",
+      "higherIsBetter": false,
+      "coefficient": -2.1811581316217,
+      "mean": 0.6302623166327713,
+      "scale": 0.4613665593894791,
+      "trainMin": 0.0017070692039903418,
+      "trainMax": 3.0
+    }
+  ],
+  "metrics": {
+    "datasetSize": 10000,
+    "defaultRate": 0.19999999999999996,
+    "logisticRegression": {
+      "auc": 0.9796984375,
+      "accuracy": 0.9365,
+      "confusionMatrix": [
+        [
+          331,
+          69
+        ],
+        [
+          58,
+          1542
+        ]
+      ]
+    },
+    "randomForestBenchmark": {
+      "auc": 0.9563015625,
+      "accuracy": 0.8965
+    }
+  }
+}
