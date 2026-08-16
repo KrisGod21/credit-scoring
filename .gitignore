@@ -43,3 +43,11 @@ next-env.d.ts
 # python
 __pycache__/
 *.pyc
+
+# AI tooling / agent config (not part of the shipped app)
+.claude/
+.agents/
+AGENTS.md
+CLAUDE.md
+skills-lock.json
+docs/superpowers/
