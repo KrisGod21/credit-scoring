@@ -1,5 +1,5 @@
 # Passbook — Portable Financial Identity for Informal Workers
-Live link : https://credit-scoring-seven.vercel.app/passbook
+Live link : https://credit-scoring-seven.vercel.app/
 
 **Omnikon Hackathon 2026 · Omni_FinTech_2**
 
