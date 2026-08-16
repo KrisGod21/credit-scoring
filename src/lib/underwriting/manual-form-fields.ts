@@ -1,19 +1,21 @@
-export interface FormFieldConfig {
-  name: string;
+import type { ManualProfileInputs } from "./occupation-profiles";
+
+export interface ManualFieldConfig {
+  key: Exclude<keyof ManualProfileInputs, "occupation">;
   label: string;
   hint: string;
   min: number;
   max: number;
   step: number;
   default: number;
-  format: (value: number) => string;
+  format: (v: number) => string;
 }
 
 const pct = (v: number) => `${Math.round(v * 100)}%`;
 
-export const FORM_FIELDS: FormFieldConfig[] = [
+export const MANUAL_FIELDS: ManualFieldConfig[] = [
   {
-    name: "avg_monthly_income",
+    key: "monthlyIncome",
     label: "Average monthly income",
     hint: "Total earnings across all work in a typical month",
     min: 1000,
@@ -23,7 +25,7 @@ export const FORM_FIELDS: FormFieldConfig[] = [
     format: (v) => `₹${v.toLocaleString("en-IN")}`,
   },
   {
-    name: "income_consistency",
+    key: "incomeConsistency",
     label: "Income consistency",
     hint: "How steady your monthly earnings are, month to month",
     min: 0,
@@ -33,27 +35,17 @@ export const FORM_FIELDS: FormFieldConfig[] = [
     format: pct,
   },
   {
-    name: "avg_monthly_txn_count",
-    label: "Monthly digital transactions",
-    hint: "UPI / mobile-wallet payments received or sent per month",
-    min: 0,
-    max: 200,
-    step: 1,
-    default: 40,
-    format: (v) => `${Math.round(v)}`,
-  },
-  {
-    name: "txn_consistency",
-    label: "Transaction consistency",
-    hint: "How regularly those digital transactions occur",
+    key: "digitalTransactionShare",
+    label: "Digital transaction share",
+    hint: "Share of the year with traceable UPI / digital payments",
     min: 0,
     max: 1,
     step: 0.01,
-    default: 0.6,
+    default: 0.5,
     format: pct,
   },
   {
-    name: "utility_ontime_rate",
+    key: "billOnTimeRate",
     label: "Utility bill on-time rate",
     hint: "Share of electricity / mobile / rent bills paid on time",
     min: 0,
@@ -63,7 +55,7 @@ export const FORM_FIELDS: FormFieldConfig[] = [
     format: pct,
   },
   {
-    name: "platform_tenure_months",
+    key: "platformTenureMonths",
     label: "Work / platform tenure",
     hint: "Months at your current trade, platform, or employer",
     min: 0,
@@ -73,7 +65,7 @@ export const FORM_FIELDS: FormFieldConfig[] = [
     format: (v) => `${Math.round(v)} mo`,
   },
   {
-    name: "customer_rating",
+    key: "customerRating",
     label: "Customer rating",
     hint: "Average rating from customers or clients, out of 5",
     min: 1,
@@ -83,7 +75,7 @@ export const FORM_FIELDS: FormFieldConfig[] = [
     format: (v) => `${v.toFixed(1)} ★`,
   },
   {
-    name: "cancellation_rate",
+    key: "cancellationRate",
     label: "Cancellation rate",
     hint: "Share of jobs or orders cancelled or left incomplete",
     min: 0,
@@ -93,7 +85,7 @@ export const FORM_FIELDS: FormFieldConfig[] = [
     format: pct,
   },
   {
-    name: "savings_rate",
+    key: "savingsRate",
     label: "Savings rate",
     hint: "Share of income typically kept as savings",
     min: 0,
@@ -103,13 +95,20 @@ export const FORM_FIELDS: FormFieldConfig[] = [
     format: pct,
   },
   {
-    name: "debt_to_income",
+    key: "debtToIncome",
     label: "Existing debt-to-income",
-    hint: "Current debt obligations relative to monthly income",
+    hint: "Current EMI obligations relative to monthly income",
     min: 0,
     max: 3,
     step: 0.05,
-    default: 0.5,
+    default: 0.3,
     format: (v) => `${v.toFixed(2)}×`,
   },
+];
+
+export const OCCUPATION_OPTIONS: { value: ManualProfileInputs["occupation"]; label: string }[] = [
+  { value: "delivery-rider", label: "Delivery rider" },
+  { value: "tailor", label: "Home-based tailor" },
+  { value: "street-vendor", label: "Street vendor" },
+  { value: "domestic-worker", label: "Domestic worker" },
 ];
