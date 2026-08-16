@@ -7,16 +7,16 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-plex-sans);
-  --font-mono: var(--font-plex-mono);
-  --font-display: var(--font-fraunces);
-  --color-seal: var(--seal);
-  --color-seal-foreground: var(--seal-foreground);
+  --font-sans: var(--font-roboto);
+  --font-mono: var(--font-roboto-mono);
+  --font-display: var(--font-poppins);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
   --color-credit: var(--credit);
-  --color-debit: var(--seal);
-  --color-gold: var(--gold);
-  --color-paper: var(--paper);
-  --color-paper-line: var(--paper-line);
+  --color-debit: var(--debit);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-hairline: var(--hairline);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -46,56 +46,66 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  --radius-sm: calc(var(--radius) * 0.4);
+  --radius-md: calc(var(--radius) * 0.7);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 3.2);
 }
 
 :root {
-  /* Passbook palette — ledger cream page, institutional indigo chrome,
-     stamp-ink accents reserved for the ledger/seal signature elements. */
-  --paper: #efe6d2;
-  --paper-line: #c9ba92;
-  --background: #efe6d2;
-  --foreground: #241c10;
-  --card: #f7f1e3;
-  --card-foreground: #241c10;
-  --popover: #f7f1e3;
-  --popover-foreground: #241c10;
-  --primary: #1b2a4a;
-  --primary-foreground: #f2ecdd;
-  --secondary: #e4d8b8;
-  --secondary-foreground: #241c10;
-  --muted: #e7dcc0;
-  --muted-foreground: #6b5d42;
-  --accent: #e4d8b8;
-  --accent-foreground: #1b2a4a;
-  --destructive: #b5342a;
-  --border: #c9ba92;
-  --input: #c9ba92;
-  --ring: #1b2a4a;
-  --seal: #b5342a;
-  --seal-foreground: #f2ecdd;
-  --credit: #2f6e4f;
-  --gold: #b08628;
-  --chart-1: #2f6e4f;
-  --chart-2: #b5342a;
-  --chart-3: #1b2a4a;
-  --chart-4: #b08628;
-  --chart-5: #6b5d42;
-  --radius: 0.3rem;
-  --sidebar: #e4d8b8;
-  --sidebar-foreground: #241c10;
-  --sidebar-primary: #1b2a4a;
-  --sidebar-primary-foreground: #f2ecdd;
-  --sidebar-accent: #efe6d2;
-  --sidebar-accent-foreground: #1b2a4a;
-  --sidebar-border: #c9ba92;
-  --sidebar-ring: #1b2a4a;
+  /* "Signal" — warm ink base (brown-tinted, never blue-black), warm bone
+     type, and a single marigold accent drawn from the visual world of the
+     Indian informal economy this product serves. Green/terracotta appear
+     only to mean money in / money out, so color always carries meaning. */
+  --background: #14110d;
+  --foreground: #f4efe4;
+  --surface: #1b1712;
+  --surface-raised: #241f18;
+  --hairline: #2f2820;
+
+  --card: #1b1712;
+  --card-foreground: #f4efe4;
+  --popover: #241f18;
+  --popover-foreground: #f4efe4;
+
+  --primary: #e9a23b;
+  --primary-foreground: #1a1409;
+  --signal: #e9a23b;
+  --signal-soft: #8a6524;
+
+  --secondary: #241f18;
+  --secondary-foreground: #f4efe4;
+  --muted: #211c16;
+  --muted-foreground: #a2947f;
+  --accent: #2a2419;
+  --accent-foreground: #f4efe4;
+
+  --credit: #6aa87c;
+  --debit: #c96f5c;
+  --destructive: #c96f5c;
+
+  --border: #2f2820;
+  --input: #2f2820;
+  --ring: #e9a23b;
+
+  --chart-1: #6aa87c;
+  --chart-2: #c96f5c;
+  --chart-3: #e9a23b;
+  --chart-4: #a2947f;
+  --chart-5: #7d8fa8;
+
+  --radius: 0.75rem;
+  --sidebar: #1b1712;
+  --sidebar-foreground: #f4efe4;
+  --sidebar-primary: #e9a23b;
+  --sidebar-primary-foreground: #1a1409;
+  --sidebar-accent: #2a2419;
+  --sidebar-accent-foreground: #f4efe4;
+  --sidebar-border: #2f2820;
+  --sidebar-ring: #e9a23b;
 }
 
 @layer base {
@@ -107,81 +117,98 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  /* Financial figures always align in columns. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
   }
 }
 
-/* Ruled-ledger-paper texture: faint horizontal lines + the red margin rule
-   that runs through every page, echoing physical passbook/ledger paper. */
-.ledger-page {
-  position: relative;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent,
-    transparent 1.85rem,
-    color-mix(in oklab, var(--paper-line) 45%, transparent) 1.85rem,
-    color-mix(in oklab, var(--paper-line) 45%, transparent) calc(1.85rem + 1px)
-  );
-  background-position: 0 0.25rem;
+/* Film grain — a fixed, non-interactive overlay that breaks the flatness of
+   large dark fields. Generated, not an asset request. */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.ledger-margin::before {
+/* Surfaces. Elevation reads through a warm tinted shadow that matches the
+   background hue rather than generic black, plus a 1px top highlight to
+   suggest a single overhead light source. */
+.surface {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.04),
+    0 1px 2px -1px rgb(12 8 4 / 0.7);
+}
+
+.surface-raised {
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.06),
+    0 18px 40px -20px rgb(10 6 2 / 0.9),
+    0 4px 10px -6px rgb(10 6 2 / 0.6);
+}
+
+.surface-interactive {
+  cursor: pointer;
+  transition:
+    border-color 220ms cubic-bezier(0.2, 0.8, 0.3, 1),
+    box-shadow 220ms cubic-bezier(0.2, 0.8, 0.3, 1),
+    transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.surface-interactive:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--signal) 40%, var(--hairline));
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.07),
+    0 22px 44px -22px rgb(10 6 2 / 0.95);
+}
+
+.surface-interactive:active {
+  transform: translateY(0);
+}
+
+/* A hairline rule that fades at both ends — used to divide sections without
+   the hard boxed-in look of a full-width border. */
+.rule-fade {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, transparent, var(--hairline) 12%, var(--hairline) 88%, transparent);
+}
+
+/* Ambient warmth behind the hero. Wide, low-opacity, heavily blurred — read
+   as light in a room, not as a neon spotlight. */
+.ambient-warm {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ambient-warm::before {
   content: "";
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 2.75rem;
-  width: 1.5px;
-  background: color-mix(in oklab, var(--seal) 55%, transparent);
-}
-
-@media (max-width: 640px) {
-  .ledger-margin::before {
-    left: 1.25rem;
-  }
-}
-
-@keyframes stamp-down {
-  0% {
-    opacity: 0;
-    transform: scale(1.9) rotate(-14deg);
-  }
-  55% {
-    opacity: 1;
-    transform: scale(0.94) rotate(-4deg);
-  }
-  75% {
-    transform: scale(1.04) rotate(-6deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(-5deg);
-  }
-}
-
-@keyframes ink-bloom {
-  0% {
-    opacity: 0.55;
-    transform: scale(0.6);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.8);
-  }
-}
-
-.animate-stamp-down {
-  animation: stamp-down 0.6s cubic-bezier(0.2, 0.8, 0.3, 1) both;
-}
-
-.animate-ink-bloom {
-  animation: ink-bloom 0.7s ease-out both;
+  inset: -30% -10% auto -10%;
+  height: 130%;
+  filter: blur(90px);
+  background:
+    radial-gradient(48rem 34rem at 72% 4%, color-mix(in oklab, var(--signal) 13%, transparent), transparent 70%),
+    radial-gradient(40rem 30rem at 8% 34%, color-mix(in oklab, #7d8fa8 7%, transparent), transparent 72%);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-stamp-down,
-  .animate-ink-bloom {
-    animation: none !important;
-    transform: none !important;
-    opacity: 1 !important;
+  html {
+    scroll-behavior: auto;
+  }
+  .surface-interactive:hover {
+    transform: none;
   }
 }

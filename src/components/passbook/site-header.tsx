@@ -1,27 +1,48 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+
+const NAV = [
+  { href: "/passbook", label: "Get scored" },
+  { href: "/lender", label: "Lender mode" },
+  { href: "/insights", label: "Model & fairness" },
+];
 
 export function SiteHeader() {
+  const pathname = usePathname();
+
   return (
-    <header className="bg-primary text-primary-foreground">
-      <div className="mx-auto flex max-w-4xl items-center justify-between px-5 py-4 sm:px-8">
-        <Link href="/" className="flex items-center gap-2.5">
+    <header className="sticky top-0 z-50 border-b border-hairline bg-background/85 backdrop-blur-xl">
+      <div className="mx-auto flex w-full max-w-[1560px] items-center justify-between px-6 py-4 sm:px-10 lg:px-14">
+        <Link href="/" className="group flex items-center gap-2.5">
           <span
             aria-hidden
-            className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-primary-foreground/70 font-display text-sm font-semibold"
+            className="grid h-7 w-7 place-items-center rounded-md bg-signal font-display text-[13px] font-bold text-primary-foreground"
           >
             ₹
           </span>
-          <span className="font-display text-lg font-semibold tracking-tight">
-            Passbook
-          </span>
+          <span className="font-display text-[17px] font-semibold tracking-tight">Passbook</span>
         </Link>
-        <nav className="flex items-center gap-5 font-mono text-xs uppercase tracking-wider text-primary-foreground/80">
-          <Link href="/passbook" className="transition-colors hover:text-primary-foreground">
-            Get scored
-          </Link>
-          <Link href="/insights" className="transition-colors hover:text-primary-foreground">
-            How it works
-          </Link>
+
+        <nav className="flex items-center gap-1">
+          {NAV.map((item) => {
+            const active = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "rounded-md px-3 py-1.5 text-[13px] transition-colors",
+                  active ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>

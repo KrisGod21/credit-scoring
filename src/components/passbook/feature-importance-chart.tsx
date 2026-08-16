@@ -14,7 +14,7 @@ export function FeatureImportanceChart({ rows }: { rows: Row[] }) {
     <div className="h-[360px] w-full">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={sorted} layout="vertical" margin={{ top: 4, right: 28, bottom: 4, left: 4 }}>
-          <CartesianGrid horizontal={false} stroke="var(--paper-line)" />
+          <CartesianGrid horizontal={false} stroke="var(--hairline)" />
           <XAxis type="number" tick={{ fontFamily: "var(--font-mono)", fontSize: 11, fill: "var(--muted-foreground)" }} />
           <YAxis
             type="category"
@@ -32,7 +32,7 @@ export function FeatureImportanceChart({ rows }: { rows: Row[] }) {
               style={{ fontFamily: "var(--font-mono)", fontSize: 11, fill: "var(--muted-foreground)" }}
             />
             {sorted.map((row) => (
-              <Cell key={row.label} fill={row.coefficient >= 0 ? "var(--credit)" : "var(--seal)"} />
+              <Cell key={row.label} fill={row.coefficient >= 0 ? "var(--credit)" : "var(--debit)"} />
             ))}
           </Bar>
         </BarChart>

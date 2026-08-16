@@ -1,66 +1,141 @@
 import { PageShell } from "@/components/passbook/page-shell";
 import { FeatureImportanceChart } from "@/components/passbook/feature-importance-chart";
+import { Reveal as ScrollReveal } from "@/components/motion/primitives";
 import { getModelInfo } from "@/lib/scoring/scoring-engine";
+
+const USED_FEATURES = [
+  "Median monthly income",
+  "Income consistency",
+  "Monthly transaction count & consistency",
+  "Utility / bill on-time rate",
+  "Work or platform tenure",
+  "Customer / client rating",
+  "Cancellation rate",
+  "Savings rate",
+  "Debt-to-income ratio",
+];
+
+const NOT_USED = [
+  "Age, gender, religion, or caste",
+  "Location, pincode, or neighborhood",
+  "Language, education level, or literacy",
+  "Name or any identity marker",
+];
 
 export default function InsightsPage() {
   const model = getModelInfo();
   const { logisticRegression, randomForestBenchmark, datasetSize, defaultRate } = model.metrics;
 
   return (
-    <PageShell>
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-seal">Audit certificate</p>
-      <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">How the model works</h1>
-      <p className="mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
-        We chose an explainable model on purpose. A credit decision that
-        cannot be explained to the person it affects is not a fair one — so
-        every score on this site is exact, traceable arithmetic, not a
-        black-box guess.
+    <PageShell className="max-w-5xl">
+      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-signal">Audit</p>
+      <h1 className="mt-4 font-display text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.05] tracking-[-0.03em]">
+        Model &amp; fairness
+      </h1>
+      <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-muted-foreground">
+        A decision you can&rsquo;t explain to the person it affects isn&rsquo;t a fair one. The model outputs one
+        number — a repayment probability — and a separate deterministic layer turns that into a lending range.
       </p>
 
-      <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <ScrollReveal className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
         <Stat label="Training profiles" value={datasetSize.toLocaleString("en-IN")} />
         <Stat label="Test AUC (deployed)" value={logisticRegression.auc.toFixed(3)} accent="credit" />
         <Stat label="Test AUC (RF benchmark)" value={randomForestBenchmark.auc.toFixed(3)} />
         <Stat label="Default rate in data" value={`${Math.round(defaultRate * 100)}%`} />
-      </div>
+      </ScrollReveal>
 
-      <div className="mt-10 rounded-sm border border-dashed border-paper-line bg-card px-5 py-4 text-sm text-muted-foreground">
-        The deployed <strong className="text-foreground">Logistic Regression</strong> scorecard
-        scores <strong className="text-credit">{logisticRegression.auc.toFixed(3)} AUC</strong> on
-        held-out data — matching or beating a black-box{" "}
-        <strong className="text-foreground">Random Forest</strong> benchmark trained on the same
-        data ({randomForestBenchmark.auc.toFixed(3)} AUC). Choosing transparency here costs
+      <div className="surface mt-10 rounded-xl px-5 py-4 text-sm text-muted-foreground">
+        The deployed <strong className="text-foreground">Logistic Regression</strong> scorecard scores{" "}
+        <strong className="text-credit">{logisticRegression.auc.toFixed(3)} AUC</strong> on held-out data —
+        matching or beating a black-box <strong className="text-foreground">Random Forest</strong> benchmark
+        trained on the same data ({randomForestBenchmark.auc.toFixed(3)} AUC). Choosing transparency here costs
         nothing in accuracy.
       </div>
 
       <section className="mt-12">
         <h2 className="mb-1 font-display text-2xl font-semibold">Factor weights</h2>
         <p className="mb-6 max-w-xl text-sm text-muted-foreground">
-          Standardized coefficients from the trained model. Positive weights
-          push a score up; negative weights pull it down. This is the same
-          math behind every ledger entry you see on a scored passbook.
+          Standardized coefficients from the trained model. Positive weights push risk probability up; negative
+          weights pull it down. This is the same math behind every entry in a passport&rsquo;s evidence ledger.
         </p>
         <FeatureImportanceChart rows={model.features.map((f) => ({ label: f.label, coefficient: f.coefficient }))} />
       </section>
 
-      <section className="mt-12 border-t border-paper-line pt-8">
+      <section className="mt-12 border-t border-hairline pt-8">
         <h2 className="mb-3 font-display text-2xl font-semibold">Data &amp; methodology</h2>
         <div className="space-y-3 text-sm text-muted-foreground">
           <p>
-            No public dataset captures alt-data signals for informal workers
-            at this granularity, so training data is synthetic: {" "}
-            {datasetSize.toLocaleString("en-IN")} profiles generated from
-            realistic feature distributions, with a default-risk label
-            derived from a domain-weighted combination of those features plus
-            noise — the same approach used in published gig-economy credit
-            scoring research.
+            No public dataset captures alt-data signals for informal workers at this granularity. Training data
+            is generated by running the app&rsquo;s own pipeline — the same transaction generator and Cashflow
+            Intelligence Engine that scores a real applicant — across {datasetSize.toLocaleString("en-IN")}{" "}
+            randomized synthetic applicants, so the model is fit on the actual feature distribution it sees in
+            production, not a separately hand-authored one. A default-risk label is derived from a
+            domain-weighted combination of those features plus noise, calibrated to a realistic ~20% default
+            rate for a thin-file population.
           </p>
           <p>
-            Features are standardized and fit with L2-regularized logistic
-            regression, then mapped from log-odds onto a familiar 300–900
-            point scale. Each feature&rsquo;s contribution to a given score is
-            the literal product of its coefficient and standardized value —
-            not an approximation.
+            Features are standardized and fit with L2-regularized logistic regression. Each feature&rsquo;s
+            contribution to a given applicant&rsquo;s risk probability is the literal product of its coefficient
+            and standardized value — not an approximation.
+          </p>
+        </div>
+      </section>
+
+      <section className="mt-12 border-t border-hairline pt-8">
+        <h2 className="mb-1 font-display text-2xl font-semibold">Fairness</h2>
+        <p className="mb-6 max-w-2xl text-sm text-muted-foreground">
+          The problem statement asks for a <em>fair</em> way to assess creditworthiness. Explainability is a
+          precondition for that, not proof of it — so here is what the model does and does not do, plainly.
+        </p>
+
+        <ScrollReveal className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="surface rounded-xl px-4 py-4">
+            <p className="mb-2 font-mono text-[10px] uppercase tracking-wider text-credit">Features used</p>
+            <ul className="space-y-1 text-sm">
+              {USED_FEATURES.map((f) => (
+                <li key={f} className="flex gap-2">
+                  <span className="text-credit">•</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="surface rounded-xl px-4 py-4">
+            <p className="mb-2 font-mono text-[10px] uppercase tracking-wider text-debit">Never used</p>
+            <ul className="space-y-1 text-sm">
+              {NOT_USED.map((f) => (
+                <li key={f} className="flex gap-2">
+                  <span className="text-debit">•</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </ScrollReveal>
+
+        <div className="mt-6 space-y-4 text-sm text-muted-foreground">
+          <p>
+            <strong className="text-foreground">Data confidence, not just a score.</strong> A self-reported
+            income figure and a 12-month verified transaction history are not the same evidence. Every metric in
+            a Financial Passport is tagged <em>verified</em>, <em>self-declared</em>, or <em>derived</em>, and
+            the overall Data Confidence score is a weighted function of how much of an applicant&rsquo;s history
+            is verified, how complete it is, how many independent income sources it covers, and how many months
+            were flagged as anomalous.
+          </p>
+          <p>
+            <strong className="text-foreground">Missing or thin data lowers confidence, it doesn&rsquo;t
+            trigger automatic rejection.</strong> The underwriting layer widens its safety margin as confidence
+            drops rather than silently assuming the best case.
+          </p>
+          <p>
+            <strong className="text-foreground">Limitations, stated directly:</strong> training data is
+            synthetic and has not been validated against real repayment outcomes; only four occupation
+            archetypes are explicitly modeled (a &ldquo;your own profile&rdquo; path generalizes beyond them,
+            but is untested at scale); no real bank, UPI, or Account Aggregator data has been integrated; and
+            because no protected characteristics were collected at all, this system has not undergone — and
+            cannot yet undergo — formal disparate-impact testing across protected groups. Explainability tells
+            you <em>why</em> a decision was made; it is not a substitute for that audit before any real-world
+            deployment.
           </p>
         </div>
       </section>
@@ -78,7 +153,7 @@ function Stat({
   accent?: "credit";
 }) {
   return (
-    <div className="rounded-sm border border-paper-line bg-card px-4 py-3">
+    <div className="surface rounded-xl px-4 py-3">
       <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
       <p className={`mt-1 font-display text-2xl font-semibold ${accent === "credit" ? "text-credit" : ""}`}>
         {value}
